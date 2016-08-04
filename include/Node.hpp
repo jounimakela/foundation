@@ -11,54 +11,39 @@ public:
 		DEFAULT_IDENTIFIER = 0
 	};
 
-	/**
-	 * TODO: We should add the root here as well!
-	 * Also move constructor blocks to cpp
-	 */
-	Node() :
-		identifier_(DEFAULT_IDENTIFIER) {
-			parent_ = nullptr;
-			root_ = nullptr;
-		}
+	Node();
+	Node(Node *parent);
+	Node(int identifier);
+	Node(int identifier, Node *parent);
 
-	Node(int identifier) :
-		identifier_(identifier) {
-			parent_ = nullptr;
-			root_ = nullptr;
-		}
-
-	Node(Node *parent) :
-		parent_(parent),
-		identifier_(DEFAULT_IDENTIFIER)  {
-			root_ = nullptr;
-		}
-
-	Node(Node *parent, int identifier) :
-		parent_(parent),
-		identifier_(identifier) {
-			root_ = nullptr;
-		}
-
-	~Node() {};
+	~Node();
 
 	// Children management
-	void addChild(Node *child);
-	void addChild(Node *child, std::vector<int> groups);
+	void append(Node *child);
 
 	std::vector<Node*>& children();
 	Node* getChildById(int identifier) const;
-	std::vector<Node*>& getChildrenByGroup(int group) const;
+	std::vector<Node*> getChildrenByGroup(int group);
 	bool hasChild(Node *child);
+	bool hasChild(int identifier);
 
 	std::size_t childrenCount() const;
 
 	Node* root() const { return root_; }
 
+	// Siblings
+	std::vector<Node*>& siblings();
+	Node* getSiblingById(int identifier) const;
+	std::vector<Node*> getSiblingsByGroup(int group);
+
+	std::size_t siblingCount() const;
+
 	// Parent management
 	Node* parent() const { return parent_; }
-	std::vector<Node*>& parents(int parent_identifier = DEFAULT_IDENTIFIER) const;
+	Node* parent(int identifier) const;
+	std::vector<Node*>& parents();
 	void removeChild(Node *child);
-	void removeChildByTag(int tag);
+	void removeChild(int identifier);
 	void removeAllChildren();
 
 	void attach(Node *parent);
@@ -67,10 +52,11 @@ public:
 	// Current node management
 	int getId() const { return identifier_; };
 
-	int addGroup(int group);
-	int addGroup(std::vector<int> groups);
+	std::vector<int> groups() const { return groups_; };
+	void addGroup(int group);
+	void addGroup(std::vector<int> groups);
 	void removeFromGroup(int group);
-	void removeAllgroups();
+	void removeAllGroups();
 	bool hasGroup(int group);
 
 protected:
