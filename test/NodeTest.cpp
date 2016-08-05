@@ -24,7 +24,6 @@ TEST_CASE("Construction", "[node][construction]")
 
 		REQUIRE(node.getId()  == Node::DEFAULT_IDENTIFIER);
 		REQUIRE(node.parent() == nullptr);
-		REQUIRE(node.root()   == nullptr);
 	}
 
 	SECTION("Constructor with identifier")
@@ -33,7 +32,6 @@ TEST_CASE("Construction", "[node][construction]")
 
 		REQUIRE(node.getId()  == PARENT);
 		REQUIRE(node.parent() == nullptr);
-		REQUIRE(node.root()   == nullptr);
 	}
 
 	SECTION("Constructor with parent")
@@ -42,7 +40,7 @@ TEST_CASE("Construction", "[node][construction]")
 		Node node(&parent);
 
 		REQUIRE(node.parent() == &parent);
-		REQUIRE(node.root()   == &parent);
+		REQUIRE(parent.hasChild(&node));
 	}
 
 	SECTION("Constructor with identifier and parent")
@@ -52,7 +50,7 @@ TEST_CASE("Construction", "[node][construction]")
 
 		REQUIRE(node.getId()  == FIRST_CHILD);
 		REQUIRE(node.parent() == &parent);
-		REQUIRE(node.root()   == &parent);
+		REQUIRE(parent.hasChild(&node));
 	}
 }
 
@@ -170,11 +168,6 @@ TEST_CASE("Tree traversal", "[node][traversing]")
 		REQUIRE_FALSE(siblings.empty());
 	}
 
-	SECTION(".root()")
-	{
-		REQUIRE(grand_child.root() == &parent);
-	}
-
 	SECTION(".parent()")
 	{
 		REQUIRE(first.parent() == &parent);
@@ -225,6 +218,11 @@ TEST_CASE("Filtering", "[node][filtering]")
 		REQUIRE(parent.hasChild(FIRST_CHILD));
 	}
 
+	SECTION(".root()")
+	{
+		REQUIRE(grand_child.root() == &parent);
+	}
+
 	SECTION(".getSiblingById(int identifier)")
 	{
 		REQUIRE(first.getSiblingById(SECOND_CHILD));
@@ -262,33 +260,40 @@ SCENARIO("Nodes can attach to a parent", "[node][manipulation]")
 {
 	GIVEN("Parent and a node")
 	{
+		Node parent(PARENT);
+		Node child(FIRST_CHILD);
+		Node grand_child(SECOND_CHILD, &child);
+
 		WHEN("Node attaches to a parent")
 		{
+			child.attach(&parent);
+
 			THEN("Parent knows about the new child")
 			{
+				REQUIRE(parent.hasChild(&child));
+				REQUIRE(parent.hasChild(FIRST_CHILD));
 			}
 
 			THEN("Child knows about the new parent")
 			{
-			}
-
-			THEN("Children know about the new root")
-			{
+				REQUIRE(child.parent() == &parent);
 			}
 		}
 
 		WHEN("Child detaches from its parent")
 		{
+			child.attach(&parent);
+			child.detach();
+
 			THEN("Parent knows the child left")
 			{
+				REQUIRE_FALSE(parent.hasChild(&child));
+				REQUIRE_FALSE(parent.hasChild(FIRST_CHILD));
 			}
 
 			THEN("Child doesnt have parents anymore")
 			{
-			}
-
-			THEN("Children know about the new root")
-			{
+				REQUIRE(child.parent() == nullptr);
 			}
 		}
 	}
@@ -298,33 +303,40 @@ SCENARIO("Nodes can add a new child", "[node][manipulation]")
 {
 	GIVEN("Parent and a node")
 	{
+		Node parent(PARENT);
+		Node child(FIRST_CHILD);
+		Node grand_child(SECOND_CHILD, &child);
+
 		WHEN("Parent adds a new child")
 		{
+			parent.append(&child);
+
 			THEN("Parent knows about the new child")
 			{
+				REQUIRE(parent.hasChild(&child));
+				REQUIRE(parent.hasChild(FIRST_CHILD));
 			}
 
 			THEN("Child knows about the new parent")
 			{
-			}
-
-			THEN("Children know about the new root")
-			{
+				REQUIRE(child.parent() == &parent);
 			}
 		}
 
 		WHEN("Parent removes a child")
 		{
+			parent.append(&child);
+			parent.removeChild(&child);
+
 			THEN("Parent knows the child left")
 			{
+				REQUIRE_FALSE(parent.hasChild(&child));
+				REQUIRE_FALSE(parent.hasChild(FIRST_CHILD));
 			}
 
 			THEN("Child doesnt have parents anymore")
 			{
-			}
-
-			THEN("Children know about the new root")
-			{
+				REQUIRE(child.parent() == nullptr);
 			}
 		}
 	}

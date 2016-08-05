@@ -4,36 +4,26 @@ Node::Node() :
 	identifier_(DEFAULT_IDENTIFIER)
 {
 	parent_ = nullptr;
-	root_ = nullptr;
 }
 
 Node::Node(int identifier) :
 	identifier_(identifier)
 {
 	parent_ = nullptr;
-	root_ = nullptr;
 }
 
 Node::Node(Node *parent) :
-	parent_(parent),
 	identifier_(DEFAULT_IDENTIFIER)
 {
-	root_ = parent_->root();
-
-	if (!root_) {
-		root_ = parent_;
-	}
+	parent_ = nullptr;
+	attach(parent);
 }
 
 Node::Node(int identifier, Node *parent) :
-	parent_(parent),
 	identifier_(identifier)
 {
-	root_ = parent_->root();
-
-	if (!root_) {
-		root_ = parent_;
-	}
+	parent_ = nullptr;
+	attach(parent);
 }
 
 Node::~Node()
@@ -96,6 +86,11 @@ std::size_t Node::childrenCount() const
 	return children_.size();
 }
 
+Node* Node::root()
+{
+	return parents().back();
+}
+
 std::vector<Node*> Node::siblings()
 {
 	std::vector<Node*> siblings = parent()->children();
@@ -154,7 +149,7 @@ std::vector<Node*> Node::parents()
 {
 	std::vector<Node*> parents;
 
-	if (root_ == nullptr) {
+	if (parent_ == nullptr) {
 		return parents;
 	}
 
@@ -200,11 +195,6 @@ void Node::attach(Node *parent)
 	}
 
 	parent_ = parent;
-	root_ = parent_->root();
-
-	if (!root_) {
-		root_ = parent_;
-	}
 }
 
 void Node::detach()
@@ -214,7 +204,6 @@ void Node::detach()
 	}
 
 	parent_ = nullptr;
-	root_	= nullptr;
 }
 
 void Node::addGroup(int group)

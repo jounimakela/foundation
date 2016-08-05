@@ -36,8 +36,6 @@ public:
 
 	std::size_t childrenCount() const;
 
-	Node* root() const { return root_; }
-
 	// Siblings
 	std::vector<Node*> siblings();
 	Node* getSiblingById(int identifier);
@@ -49,6 +47,7 @@ public:
 	Node* parent() const { return parent_; }
 	Node* parent(int identifier) const;
 	std::vector<Node*> parents();
+	Node* root();
 	// TODO: These could return the removed child?
 	void removeChild(Node *child);
 	void removeChild(int identifier);
@@ -70,7 +69,6 @@ public:
 protected:
 	std::vector<Node*> children_;
 	Node *parent_;
-	Node *root_;
 
 	int identifier_;
 	std::vector<int> groups_;
