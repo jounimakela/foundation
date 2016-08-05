@@ -4,6 +4,13 @@
 #include <vector>
 #include <algorithm> // std::find
 
+/**
+ * TODO: Node detach and removing could be improved by having a vector of
+ * weak_ptrs and custom deleter which calls a function in the parent which
+ * tells it to remove this pointer from it's vector. Similar what asset
+ * manager does.
+ */
+
 class Node
 {
 public:
@@ -32,8 +39,8 @@ public:
 	Node* root() const { return root_; }
 
 	// Siblings
-	std::vector<Node*>& siblings();
-	Node* getSiblingById(int identifier) const;
+	std::vector<Node*> siblings();
+	Node* getSiblingById(int identifier);
 	std::vector<Node*> getSiblingsByGroup(int group);
 
 	std::size_t siblingCount() const;
@@ -41,7 +48,8 @@ public:
 	// Parent management
 	Node* parent() const { return parent_; }
 	Node* parent(int identifier) const;
-	std::vector<Node*>& parents();
+	std::vector<Node*> parents();
+	// TODO: These could return the removed child?
 	void removeChild(Node *child);
 	void removeChild(int identifier);
 	void removeAllChildren();

@@ -82,6 +82,12 @@ bool Node::hasChild(Node *child)
 
 bool Node::hasChild(int identifier)
 {
+	for (auto child : children_) {
+		if (child->getId() == identifier) {
+			return child;
+		}
+	}
+
 	return false;
 }
 
@@ -90,14 +96,27 @@ std::size_t Node::childrenCount() const
 	return children_.size();
 }
 
-std::vector<Node*>& Node::siblings()
+std::vector<Node*> Node::siblings()
 {
-	std::vector<Node*> siblings;
+	std::vector<Node*> siblings = parent()->children();
+	siblings.erase(
+		std::remove(siblings.begin(), siblings.end(), this),
+		siblings.end()
+	);
+
 	return siblings;
 }
 
-Node* Node::getSiblingById(int identifier) const
+Node* Node::getSiblingById(int identifier)
 {
+	std::vector<Node*> siblings_ = siblings();
+
+	for (Node *sibling : siblings_) {
+		if (sibling->getId() == identifier) {
+			return sibling;
+		}
+	}
+
 	return nullptr;
 }
 
@@ -109,17 +128,43 @@ std::vector<Node*> Node::getSiblingsByGroup(int group)
 
 std::size_t Node::siblingCount() const
 {
-	return children_.size();
+	// TODO: Should probably make sure we have a parent!
+	std::size_t count = parent()->children().size();
+	count--; // -1 since the current node is one of the children
+
+	return count;
 }
 
 Node* Node::parent(int identifier) const
 {
-	return nullptr;
+	Node *parent = parent_;
+
+	if (parent_ == nullptr) {
+		return parent;
+	}
+
+	do {
+		parent = parent->parent();
+	} while(parent != nullptr && parent->getId() != identifier);
+
+	return parent;
 }
 
-std::vector<Node*>& Node::parents()
+std::vector<Node*> Node::parents()
 {
 	std::vector<Node*> parents;
+
+	if (root_ == nullptr) {
+		return parents;
+	}
+
+	Node *parent = parent_;
+
+	do {
+		parents.push_back(parent);
+		parent = parent->parent();
+	} while(parent != nullptr);
+
 	return parents;
 }
 
@@ -129,17 +174,23 @@ void Node::removeChild(Node* child)
 		std::remove(children_.begin(), children_.end(), child),
 		children_.end()
 	);
-	// TODO: BUG: Removed child does not know it has been removed
+
+	if (child->parent() == this) {
+		child->detach();
+	}
 }
 
 void Node::removeChild(int identifier)
 {
-	return;
+	auto child = getChildById(identifier);
+	removeChild(child);
 }
 
 void Node::removeAllChildren()
 {
-	return;
+	for (auto child : children_) {
+		removeChild(child);
+	}
 }
 
 void Node::attach(Node *parent)
@@ -158,61 +209,40 @@ void Node::attach(Node *parent)
 
 void Node::detach()
 {
-	parent_->removeChild(this);
+	if (parent_->hasChild(this)) {
+		parent_->removeChild(this);
+	}
+
 	parent_ = nullptr;
 	root_	= nullptr;
 }
 
 void Node::addGroup(int group)
 {
-	return;
+	groups_.push_back(group);
 }
 
 void Node::addGroup(std::vector<int> groups)
 {
-	return;
+	groups_.insert(groups_.end(), groups.begin(), groups.end());
 }
 
 void Node::removeFromGroup(int group)
 {
-	return;
+	groups_.erase(
+		std::remove(groups_.begin(), groups_.end(), group),
+		groups_.end()
+	);
 }
 
 void Node::removeAllGroups()
 {
-	return;
+	groups_.clear();
 }
 
 bool Node::hasGroup(int group)
 {
-	return false;
+	return (std::find(groups_.begin(),
+			  groups_.end(),
+			  group) != groups_.end());
 }
-
-/*
-sdt::vector<Node*>& Node::parents(int parent_identifier)
-{
-	std::vector<Node*> parents;
-
-	if (root_ == nullptr) {
-		return parents;
-	}
-
-	Node *parent = parent_;
-
-	if (parent_identifier != DEFAULT_IDENTIFIER) {
-		do {
-			parents.push_back(parent);
-			parent = parent.parent();
-		} while(parent != root_ || parent.getId() == parent_identifier);
-
-	return parents;
-	}
-
-	do {
-		parents.push_back(parent);
-		parent = parent.parent();
-	} while(parent != root_);
-
-	return parents;
-}
-*/

@@ -2,25 +2,22 @@
 #include "catch.hpp"
 #include "Node.hpp"
 
-#include <algorithm> // std::find
+#include <algorithm>
 
+// TODO: = 1, = 2, =3 .. does it work without sayin em numbers?
 enum {
 	PARENT = 1,
 	FIRST_CHILD = 2,
 	SECOND_CHILD = 3
 };
 
-// TODO: Rename to GROUP_ONE
 enum {
-	TEST_GROUP_ONE = 1,
-	TEST_GROUP_TWO = 2
+	GROUP_ONE = 1,
+	GROUP_TWO = 2
 };
 
 TEST_CASE("Construction", "[node][construction]")
 {
-	// TODO: Replace with PARENT
-	const int TEST_IDENTIFIER = 1;
-
 	SECTION("Empty constructor")
 	{
 		Node node;
@@ -32,9 +29,9 @@ TEST_CASE("Construction", "[node][construction]")
 
 	SECTION("Constructor with identifier")
 	{
-		Node node(TEST_IDENTIFIER);
+		Node node(PARENT);
 
-		REQUIRE(node.getId()  == TEST_IDENTIFIER);
+		REQUIRE(node.getId()  == PARENT);
 		REQUIRE(node.parent() == nullptr);
 		REQUIRE(node.root()   == nullptr);
 	}
@@ -42,7 +39,7 @@ TEST_CASE("Construction", "[node][construction]")
 	SECTION("Constructor with parent")
 	{
 		Node parent;
-		Node node;
+		Node node(&parent);
 
 		REQUIRE(node.parent() == &parent);
 		REQUIRE(node.root()   == &parent);
@@ -51,9 +48,9 @@ TEST_CASE("Construction", "[node][construction]")
 	SECTION("Constructor with identifier and parent")
 	{
 		Node parent;
-		Node node(TEST_IDENTIFIER);
+		Node node(FIRST_CHILD, &parent);
 
-		REQUIRE(node.getId()  == TEST_IDENTIFIER);
+		REQUIRE(node.getId()  == FIRST_CHILD);
 		REQUIRE(node.parent() == &parent);
 		REQUIRE(node.root()   == &parent);
 	}
@@ -75,6 +72,7 @@ TEST_CASE("Manipulation", "[node][manipulation]")
 
 	SECTION(".removeChild(*Node)")
 	{
+		parent.append(&first);
 		parent.removeChild(&first);
 
 		REQUIRE_FALSE(parent.hasChild(&first));
@@ -118,29 +116,29 @@ TEST_CASE("Manipulation", "[node][manipulation]")
 
 	SECTION(".addGroup(int group)")
 	{
-		parent.addGroup(TEST_GROUP_ONE);
+		parent.addGroup(GROUP_ONE);
 
-		REQUIRE(parent.hasGroup(TEST_GROUP_ONE));
+		REQUIRE(parent.hasGroup(GROUP_ONE));
 	}
 
 	SECTION(".addGroup(std::vector<int> groups)")
 	{
-		std::vector<int> groups { TEST_GROUP_TWO };
+		std::vector<int> groups { GROUP_TWO };
 		parent.addGroup(groups);
 
-		REQUIRE(parent.hasGroup(TEST_GROUP_TWO));
+		REQUIRE(parent.hasGroup(GROUP_TWO));
 	}
 
 	SECTION(".removeFromGroup(int group)")
 	{
-		parent.removeFromGroup(TEST_GROUP_ONE);
+		parent.removeFromGroup(GROUP_ONE);
 
-		REQUIRE_FALSE(parent.hasGroup(TEST_GROUP_ONE));
+		REQUIRE_FALSE(parent.hasGroup(GROUP_ONE));
 	}
 
 	SECTION(".removeAllGroups()")
 	{
-		parent.addGroup(TEST_GROUP_ONE);
+		parent.addGroup(GROUP_ONE);
 		parent.removeAllGroups();
 
 		REQUIRE(parent.groups().empty());
@@ -186,9 +184,10 @@ TEST_CASE("Tree traversal", "[node][traversing]")
 	{
 		auto parents = grand_child.parents();
 
-		REQUIRE(std::find(parents.begin(),
-				  parents.end(),
-				  &parent) != parents.end());
+		REQUIRE(parents.size() == 2);
+	//	REQUIRE(std::find(parents.begin(),
+	//			  parents.end(),
+	//			  parent) != parents.end());
 	}
 }
 
@@ -199,8 +198,8 @@ TEST_CASE("Filtering", "[node][filtering]")
 	Node second(SECOND_CHILD);
 	Node grand_child;
 
-	first.addGroup(TEST_GROUP_ONE);
-	second.addGroup(TEST_GROUP_TWO);
+	first.addGroup(GROUP_ONE);
+	second.addGroup(GROUP_TWO);
 
 	parent.append(&first);
 	parent.append(&second);
@@ -213,7 +212,7 @@ TEST_CASE("Filtering", "[node][filtering]")
 
 	SECTION(".getChildrenByGroup(int group)")
 	{
-	//	REQUIRE(parent.getChildrenByGroup(TEST_GROUP_TWO) == &second);
+	//	REQUIRE(parent.getChildrenByGroup(GROUP_TWO) == &second);
 	}
 
 	SECTION(".hasChild(Node *child)")
@@ -233,12 +232,12 @@ TEST_CASE("Filtering", "[node][filtering]")
 
 	SECTION(".getSiblingsByGroup(int group)")
 	{
-		//REQUIRE(first.getSiblingsByGroup(TEST_GROUP_TWO));
+		//TODO: REQUIRE(first.getSiblingsByGroup(GROUP_TWO));
 	}
 
 	SECTION(".parent(int identifier)")
 	{
-		auto found = grand_child.parent(PARENT);
+		Node* found = grand_child.parent(PARENT);
 
 		REQUIRE(found == &parent);
 	}
@@ -254,7 +253,8 @@ TEST_CASE("Enumeration", "[node][enumeration]")
 
 	SECTION(".siblingCount()")
 	{
-		REQUIRE(first.siblingCount() == 2);
+		std::size_t count = first.siblingCount();
+		REQUIRE(count == 2);
 	}
 }
 
