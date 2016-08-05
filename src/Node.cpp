@@ -57,10 +57,18 @@ Node* Node::getChildById(int identifier) const
 	return nullptr;
 }
 
-std::vector<Node*> getChildrenByGroup(int group)
+std::vector<Node*> Node::getChildrenByGroup(int group)
 {
-	std::vector<Node*> children;
-	return children;
+	std::vector<Node*> children_ = children();
+	std::vector<Node*> result;
+
+	for (Node *child : children_) {
+		if (child->hasGroup(group)) {
+			result.push_back(child);
+		}
+	}
+
+	return result;
 }
 
 bool Node::hasChild(Node *child)
@@ -117,13 +125,25 @@ Node* Node::getSiblingById(int identifier)
 
 std::vector<Node*> Node::getSiblingsByGroup(int group)
 {
-	std::vector<Node*> siblings;
-	return siblings;
+	std::vector<Node*> siblings_ = siblings();
+	std::vector<Node*> result;
+
+	for (Node *sibling : siblings_) {
+		if (sibling->hasGroup(group)) {
+			result.push_back(sibling);
+		}
+	}
+
+	return result;
 }
 
 std::size_t Node::siblingCount() const
 {
-	// TODO: Should probably make sure we have a parent!
+	if (parent() == nullptr)
+	{
+		return 0;
+	}
+
 	std::size_t count = parent()->children().size();
 	count--; // -1 since the current node is one of the children
 

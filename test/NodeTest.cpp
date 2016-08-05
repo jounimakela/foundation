@@ -4,16 +4,15 @@
 
 #include <algorithm>
 
-// TODO: = 1, = 2, =3 .. does it work without sayin em numbers?
 enum {
-	PARENT = 1,
-	FIRST_CHILD = 2,
-	SECOND_CHILD = 3
+	PARENT,
+	FIRST_CHILD,
+	SECOND_CHILD
 };
 
 enum {
-	GROUP_ONE = 1,
-	GROUP_TWO = 2
+	GROUP_ONE,
+	GROUP_TWO
 };
 
 TEST_CASE("Construction", "[node][construction]")
@@ -178,9 +177,10 @@ TEST_CASE("Tree traversal", "[node][traversing]")
 		auto parents = grand_child.parents();
 
 		REQUIRE(parents.size() == 2);
-	//	REQUIRE(std::find(parents.begin(),
-	//			  parents.end(),
-	//			  parent) != parents.end());
+
+		REQUIRE(std::find(parents.begin(),
+				parents.end(),
+				&parent) != parents.end());
 	}
 }
 
@@ -205,7 +205,11 @@ TEST_CASE("Filtering", "[node][filtering]")
 
 	SECTION(".getChildrenByGroup(int group)")
 	{
-	//	REQUIRE(parent.getChildrenByGroup(GROUP_TWO) == &second);
+		auto children = parent.getChildrenByGroup(GROUP_TWO);
+
+		REQUIRE((std::find(children.begin(),
+				  children.end(),
+				  &second) != children.end()));
 	}
 
 	SECTION(".hasChild(Node *child)")
@@ -230,7 +234,11 @@ TEST_CASE("Filtering", "[node][filtering]")
 
 	SECTION(".getSiblingsByGroup(int group)")
 	{
-		//TODO: REQUIRE(first.getSiblingsByGroup(GROUP_TWO));
+		auto siblings = first.getSiblingsByGroup(GROUP_TWO);
+
+		REQUIRE((std::find(siblings.begin(),
+				  siblings.end(),
+				  &second) != siblings.end()));
 	}
 
 	SECTION(".parent(int identifier)")

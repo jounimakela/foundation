@@ -48,7 +48,7 @@ public:
 	Node* parent(int identifier) const;
 	std::vector<Node*> parents();
 	Node* root();
-	// TODO: These could return the removed child?
+
 	void removeChild(Node *child);
 	void removeChild(int identifier);
 	void removeAllChildren();
