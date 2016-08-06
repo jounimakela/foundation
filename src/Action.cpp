@@ -1,6 +1,7 @@
 #include "Action.hpp"
 
 Action::Action(const std::string name) :
+	Node(),
 	name_(name),
 	status_(ActionStatus::FRESH)
 {}

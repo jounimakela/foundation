@@ -12,7 +12,7 @@ enum ActionStatus {
 	CANCELLED
 };
 
-class Action
+class Action : public Node
 {
 public:
 	Action(const std::string name);
