@@ -9,6 +9,7 @@ public:
 	~FiniteAction() {};
 
 	void step(float delta);
+	float timeElapsed() const { return time_elapsed_; };
 
 protected:
 	float duration_;
