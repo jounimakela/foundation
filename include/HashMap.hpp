@@ -69,9 +69,7 @@ public:
 	void add(PropertyInterface *property);
 	void clone(const HashMap &map);
 	bool contains(const std::string key);
-	void merge(HashMap &map);
 	std::size_t count();
 
-	// TODO: this should be protected
 	KeyValuePairs pairs_;
 };

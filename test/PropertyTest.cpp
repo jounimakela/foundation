@@ -19,6 +19,14 @@ TEST_CASE("Construction", "[property][construction]")
 		REQUIRE(property.name() == "Name");
 		REQUIRE(property.value() == "Value");
 	}
+
+	SECTION("Property can be cloned")
+	{
+		Property<std::string> property("Name", "Value");
+		PropertyInterface *cloned = property.clone();
+
+		REQUIRE(cloned->name() == "Name");
+	}
 }
 
 TEST_CASE("Setters and getters", "[property][set][get]")

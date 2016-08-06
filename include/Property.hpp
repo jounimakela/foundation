@@ -3,10 +3,6 @@
 #include <string>
 #include <typeinfo>
 
-/**
- * TODO: Cloning is missing.
- */
-
 class PropertyInterface
 {
 public:
@@ -19,6 +15,7 @@ public:
 
 	std::string type() const { return type_; };
 	const std::string name() const { return name_; };
+	virtual PropertyInterface* clone() = 0;
 
 protected:
 	void type(std::string type) { type_ = type; };
@@ -43,6 +40,12 @@ public:
 
 	T value() const { return value_; }
 	void assign(T value) { value_ = value; }
+	PropertyInterface* clone()
+	{
+		Property<T> *property = new Property<T>(name());
+		property->assign(value());
+		return property;
+	}
 
 protected:
 	T value_;

@@ -26,12 +26,11 @@ SCENARIO("Hash map can get and set values", "[hash_map][manipulation]")
 	}
 }
 
-SCENARIO("Hash map can be cloned and merged", "[hash_map][manipulation]")
+SCENARIO("Hash map can be cloned", "[hash_map][manipulation]")
 {
 	GIVEN("Hash map") {
 		HashMap map;
-		Property<int> property("Test");
-		map.add(&property);
+		map.add<int>("Test", 1337);
 
 		WHEN("Map is cloned") {
 			HashMap clonemap;
@@ -39,16 +38,6 @@ SCENARIO("Hash map can be cloned and merged", "[hash_map][manipulation]")
 
 			THEN("Cloned map has the same keys") {
 				REQUIRE(clonemap.contains("Test"));
-			}
-		}
-
-		WHEN("Map merges another map") {
-			HashMap another;
-			another.add<int>("Integer", 10);
-			map.merge(another);
-
-			THEN("It contains merged values") {
-				REQUIRE(map.contains("Integer"));
 			}
 		}
 	}
