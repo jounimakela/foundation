@@ -1,0 +1,49 @@
+#pragma once
+
+#include <string>
+#include <typeinfo>
+
+/**
+ * TODO: Cloning is missing.
+ */
+
+class PropertyInterface
+{
+public:
+	PropertyInterface(std::string type, std::string name) :
+		type_(type),
+		name_(name)
+	{};
+
+	virtual ~PropertyInterface() {};
+
+	std::string type() const { return type_; };
+	const std::string name() const { return name_; };
+
+protected:
+	void type(std::string type) { type_ = type; };
+
+private:
+	std::string type_;
+	const std::string name_;
+};
+
+template<class T = unsigned int>
+class Property : public PropertyInterface
+{
+public:
+	Property(const std::string name) :
+		PropertyInterface(typeid(T).name(), name)
+	{}
+
+	Property(const std::string name, T value) :
+		PropertyInterface(typeid(T).name(), name),
+		value_(value)
+	{}
+
+	T value() const { return value_; }
+	void assign(T value) { value_ = value; }
+
+protected:
+	T value_;
+};
