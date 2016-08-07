@@ -1,6 +1,6 @@
 #include "FiniteAction.hpp"
 
-FiniteAction::FiniteAction(const std::string name, float duration) :
+FiniteAction::FiniteAction(const std::string& name, float duration) :
 	Action(name),
 	duration_(duration),
 	time_elapsed_(0)

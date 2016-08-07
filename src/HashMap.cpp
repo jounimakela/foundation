@@ -17,7 +17,7 @@ HashMap::~HashMap()
 	}
 }
 
-bool HashMap::contains(const std::string key)
+bool HashMap::contains(const std::string& key)
 {
 	return (pairs_.find(key) != pairs_.end());
 }

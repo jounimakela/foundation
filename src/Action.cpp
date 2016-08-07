@@ -1,9 +1,10 @@
 #include "Action.hpp"
 
-Action::Action(const std::string name) :
+Action::Action(const std::string& name) :
 	Node(),
 	name_(name),
-	status_(ActionStatus::FRESH)
+	status_(ActionStatus::FRESH),
+	target_(nullptr)
 {}
 
 void Action::execute(Node *target)

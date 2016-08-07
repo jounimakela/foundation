@@ -5,7 +5,7 @@
 class RepeatingAction : public FiniteAction
 {
 public:
-	RepeatingAction(const std::string name, float duration);
+	RepeatingAction(const std::string& name, float duration);
 	~RepeatingAction() {};
 
 	void step(float delta);

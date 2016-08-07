@@ -1,6 +1,6 @@
 #include "RepeatingAction.hpp"
 
-RepeatingAction::RepeatingAction(const std::string name, float duration) :
+RepeatingAction::RepeatingAction(const std::string& name, float duration) :
 	FiniteAction(name, duration),
 	count_repeated_(0)
 {}

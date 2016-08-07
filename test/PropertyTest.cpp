@@ -26,6 +26,7 @@ TEST_CASE("Construction", "[property][construction]")
 		PropertyInterface *cloned = property.clone();
 
 		REQUIRE(cloned->name() == "Name");
+		delete cloned;
 	}
 }
 

@@ -29,12 +29,12 @@ template<class T = unsigned int>
 class Property : public PropertyInterface
 {
 public:
-	Property(const std::string name) :
+	Property(const std::string& name) :
 		PropertyInterface(typeid(T).name(), name),
 		value_(T())
 	{}
 
-	Property(const std::string name, T value) :
+	Property(const std::string& name, T value) :
 		PropertyInterface(typeid(T).name(), name),
 		value_(value)
 	{}

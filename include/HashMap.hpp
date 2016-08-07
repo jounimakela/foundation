@@ -17,7 +17,7 @@ public:
 	virtual ~HashMap();
 
 	template<class T>
-	T get(const std::string key)
+	T get(const std::string& key)
 	{
 		if (!contains(key)) {
 			std::cerr << "Property(" << key << ") not found. "
@@ -35,7 +35,7 @@ public:
 	}
 
 	template<class T>
-	void set(const std::string key, T value)
+	void set(const std::string& key, T value)
 	{
 		if (!contains(key)) {
 			std::cerr << "Property(" << key << ") not found. "
@@ -53,7 +53,7 @@ public:
 	}
 
 	template<class T>
-	void add(const std::string key, T value)
+	void add(const std::string& key, T value)
 	{
 		if (contains(key)) {
 			std::cerr << "Property(" << key << ") already exists. "
@@ -68,7 +68,7 @@ public:
 
 	void add(PropertyInterface *property);
 	void clone(const HashMap &map);
-	bool contains(const std::string key);
+	bool contains(const std::string& key);
 	std::size_t count();
 
 	KeyValuePairs pairs_;

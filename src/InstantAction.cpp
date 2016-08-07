@@ -1,6 +1,6 @@
 #include "InstantAction.hpp"
 
-InstantAction::InstantAction(const std::string name) :
+InstantAction::InstantAction(const std::string& name) :
 	Action(name)
 {}
 
