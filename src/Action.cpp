@@ -26,3 +26,14 @@ void Action::success()
 {
 	status_ = ActionStatus::SUCCEEDED;
 }
+
+bool Action::isDone() const
+{
+	if (status_ != ActionStatus::FRESH ||
+			ActionStatus::RUNNING)
+	{
+		return true;
+	}
+
+	return false;
+}

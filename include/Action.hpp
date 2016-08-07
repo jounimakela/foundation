@@ -28,6 +28,8 @@ public:
 	void cancel();
 	void success();
 
+	bool isDone() const;
+
 protected:
 	const std::string name_;
 	ActionStatus status_;

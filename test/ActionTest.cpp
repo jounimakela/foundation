@@ -64,6 +64,7 @@ TEST_CASE("Finite Action", "[finite][construction]")
 
 		REQUIRE(test.timeElapsed() == 10);
 		REQUIRE(test.status() == ActionStatus::SUCCEEDED);
+		REQUIRE(test.isDone() == true);
 
 		test.step(5);
 
@@ -83,6 +84,7 @@ TEST_CASE("Instant Action", "[instant][construction]")
 
 		test.step(5);
 		REQUIRE(test.status() == ActionStatus::SUCCEEDED);
+		REQUIRE(test.isDone() == true);
 	}
 }
 
