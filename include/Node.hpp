@@ -4,6 +4,8 @@
 #include <vector>
 #include <algorithm> // std::find
 
+#include "HashMap.hpp"
+
 /**
  * TODO: Node detach and removing could be improved by having a vector of
  * weak_ptrs and custom deleter which calls a function in the parent which
@@ -66,9 +68,14 @@ public:
 	void removeAllGroups();
 	bool hasGroup(int group);
 
+	// Properties
+	HashMap& properties() { return properties_; };
+	void setProperties(HashMap &properties);
+
 protected:
 	std::vector<Node*> children_;
 	Node *parent_;
+	HashMap properties_;
 
 	int identifier_;
 	std::vector<int> groups_;

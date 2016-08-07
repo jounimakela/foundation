@@ -349,3 +349,44 @@ SCENARIO("Nodes can add a new child", "[node][manipulation]")
 		}
 	}
 }
+
+SCENARIO("Node properties can be changed")
+{
+	GIVEN("A fresh node")
+	{
+		Node node;
+
+		WHEN("Single property is assigned")
+		{
+			node.properties().add<int>("Key", 100);
+
+			THEN("It can be fetched")
+			{
+				REQUIRE(node.properties().contains("Key"));
+			}
+
+			THEN("It can be changed")
+			{
+				node.properties().set<int>("Key", 200);
+				int key = node.properties().get<int>("Key");
+
+				REQUIRE(key == 200);
+			}
+		}
+
+		WHEN("Properties are assigned")
+		{
+			HashMap new_properties;
+			new_properties.add<int>("Integer", 100);
+			new_properties.add<float>("Float", 12);
+
+			node.setProperties(new_properties);
+
+			THEN("They are copied over")
+			{
+				REQUIRE(node.properties().contains("Integer"));
+				REQUIRE(node.properties().contains("Float"));
+			}
+		}
+	}
+}

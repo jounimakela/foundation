@@ -2,9 +2,18 @@
 
 HashMap::~HashMap()
 {
-	for (auto pair : pairs_) {
-		PropertyInterface *property = (pair.second);
-		delete property;
+	// for (auto pair : pairs_) {
+	// 	PropertyInterface *property = (pair.second);
+	// 	delete property;
+	// }
+	KeyValuePairs::iterator anProptertyIter;
+	for(anProptertyIter = pairs_.begin();
+		anProptertyIter != pairs_.end();
+		++anProptertyIter)
+	{
+		PropertyInterface* anProperty = (anProptertyIter->second);
+		delete anProperty;
+		anProperty = NULL;
 	}
 }
 

@@ -30,7 +30,8 @@ class Property : public PropertyInterface
 {
 public:
 	Property(const std::string name) :
-		PropertyInterface(typeid(T).name(), name)
+		PropertyInterface(typeid(T).name(), name),
+		value_(T())
 	{}
 
 	Property(const std::string name, T value) :
