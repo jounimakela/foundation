@@ -1,13 +1,11 @@
 # add_executable(TestExecutableName TestFileName.cpp)
 add_executable(NodeTest NodeTest.cpp)
-add_executable(PropertyTest PropertyTest.cpp)
 add_executable(ActionTest ActionTest.cpp)
 
 # target_link_libraries(TestExecutableName LINK_PUBLIC LibraryName)
 # Where LibraryName is foundation
 
 target_link_libraries(NodeTest LINK_PUBLIC foundation)
-target_link_libraries(PropertyTest LINK_PUBLIC foundation)
 target_link_libraries(ActionTest LINK_PUBLIC foundation)
 
 # For SFML testing
@@ -20,5 +18,4 @@ target_link_libraries(ActionTest LINK_PUBLIC foundation)
 # Add tests
 # add_test(test_name_test TestExecutableName)
 add_test(node_test NodeTest)
-add_test(property_test PropertyTest)
 add_test(action_test ActionTest)
