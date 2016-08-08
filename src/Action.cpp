@@ -5,7 +5,8 @@ Action::Action(const std::string& name) :
 	name_(name),
 	status_(ActionStatus::FRESH),
 	target_(nullptr)
-{}
+{
+}
 
 void Action::execute(Node *target)
 {
@@ -30,9 +31,8 @@ void Action::success()
 
 bool Action::isDone() const
 {
-	if (status_ != ActionStatus::FRESH ||
-			ActionStatus::RUNNING)
-	{
+	if (    status_ != ActionStatus::FRESH ||
+		status_ != ActionStatus::RUNNING) {
 		return true;
 	}
 

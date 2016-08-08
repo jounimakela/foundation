@@ -2,12 +2,12 @@
 
 InstantAction::InstantAction(const std::string& name) :
 	Action(name)
-{}
+{
+}
 
 void InstantAction::step(float delta)
 {
-	if (status() != ActionStatus::RUNNING)
-	{
+	if (status() != ActionStatus::RUNNING) {
 		return;
 	}
 

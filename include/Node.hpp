@@ -6,13 +6,6 @@
 
 #include "HashMap.hpp"
 
-/**
- * TODO: Node detach and removing could be improved by having a vector of
- * weak_ptrs and custom deleter which calls a function in the parent which
- * tells it to remove this pointer from it's vector. Similar what asset
- * manager does.
- */
-
 class Node
 {
 public:
@@ -27,7 +20,7 @@ public:
 
 	~Node();
 
-	// Children management
+// Children management
 	void append(Node *child);
 
 	std::vector<Node*>& children();
@@ -38,15 +31,18 @@ public:
 
 	std::size_t childrenCount() const;
 
-	// Siblings
+// Siblings
 	std::vector<Node*> siblings();
 	Node* getSiblingById(int identifier);
 	std::vector<Node*> getSiblingsByGroup(int group);
 
 	std::size_t siblingCount() const;
 
-	// Parent management
-	Node* parent() const { return parent_; }
+// Parent management
+	Node* parent() const
+	{
+		return parent_;
+	}
 	Node* parent(int identifier) const;
 	std::vector<Node*> parents();
 	Node* root();
@@ -58,18 +54,27 @@ public:
 	void attach(Node *parent);
 	void detach();
 
-	// Current node management
-	int getId() const { return identifier_; };
+// Current node management
+	int getId() const
+	{
+		return identifier_;
+	};
 
-	std::vector<int> groups() const { return groups_; };
+	std::vector<int> groups() const
+	{
+		return groups_;
+	};
 	void addGroup(int group);
 	void addGroup(std::vector<int> groups);
 	void removeFromGroup(int group);
 	void removeAllGroups();
 	bool hasGroup(int group);
 
-	// Properties
-	HashMap& properties() { return properties_; };
+// Properties
+	HashMap& properties()
+	{
+		return properties_;
+	};
 	void setProperties(HashMap &properties);
 
 protected:

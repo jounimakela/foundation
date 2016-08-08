@@ -3,12 +3,12 @@
 RepeatingAction::RepeatingAction(const std::string& name, float duration) :
 	FiniteAction(name, duration),
 	count_repeated_(0)
-{}
+{
+}
 
 void RepeatingAction::step(float delta)
 {
-	if (status() != ActionStatus::RUNNING)
-	{
+	if (status() != ActionStatus::RUNNING) {
 		return;
 	}
 

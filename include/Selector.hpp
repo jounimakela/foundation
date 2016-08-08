@@ -6,7 +6,9 @@ class Selector : public Action
 {
 public:
 	Selector();
-	~Selector() {};
+	~Selector()
+	{
+	};
 
 protected:
 };

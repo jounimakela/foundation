@@ -13,21 +13,23 @@ using KeyValuePairs = std::unordered_map<std::string, PropertyInterface *>;
 class HashMap
 {
 public:
-	HashMap() {};
+	HashMap()
+	{
+	};
 	virtual ~HashMap();
 
 	template<class T>
 	T get(const std::string& key)
 	{
 		if (!contains(key)) {
-			std::cerr << "Property(" << key << ") not found. "
-				<< "Returning blank type." << std::endl;
+			std::cerr	<< "Property(" << key << ") not found. "
+					<< "Returning blank type." << std::endl;
 			return T();
 		}
 
 		if (pairs_.at(key)->type() != typeid(T).name()) {
-			std::cerr << "Property(" << key << ") type mismatch. "
-				<< "Returning blank type." << std::endl;
+			std::cerr	<< "Property(" << key << ") type mismatch. "
+					<< "Returning blank type." << std::endl;
 			return T();
 		}
 
@@ -38,14 +40,14 @@ public:
 	void set(const std::string& key, T value)
 	{
 		if (!contains(key)) {
-			std::cerr << "Property(" << key << ") not found. "
-				<< "Returning blank type." << std::endl;
+			std::cerr	<< "Property(" << key << ") not found. "
+					<< "Returning blank type." << std::endl;
 			return;
 		}
 
 		if (pairs_.at(key)->type() != typeid(T).name()) {
-			std::cerr << "Property(" << key << ") type mismatch. "
-				<< "Value not set." << std::endl;
+			std::cerr	<< "Property(" << key << ") type mismatch. "
+					<< "Value not set." << std::endl;
 			return;
 		}
 
@@ -56,8 +58,8 @@ public:
 	void add(const std::string& key, T value)
 	{
 		if (contains(key)) {
-			std::cerr << "Property(" << key << ") already exists. "
-				<< std::endl;
+			std::cerr	<< "Property(" << key << ") already exists. "
+					<< std::endl;
 			return;
 		}
 

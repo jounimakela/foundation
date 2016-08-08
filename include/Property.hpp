@@ -9,16 +9,28 @@ public:
 	PropertyInterface(std::string type, std::string name) :
 		type_(type),
 		name_(name)
-	{};
+	{
+	};
 
-	virtual ~PropertyInterface() {};
+	virtual ~PropertyInterface()
+	{
+	};
 
-	std::string type() const { return type_; };
-	const std::string name() const { return name_; };
+	std::string type() const
+	{
+		return type_;
+	};
+	const std::string name() const
+	{
+		return name_;
+	};
 	virtual PropertyInterface* clone() = 0;
 
 protected:
-	void type(std::string type) { type_ = type; };
+	void type(std::string type)
+	{
+		type_ = type;
+	};
 
 private:
 	std::string type_;
@@ -32,15 +44,23 @@ public:
 	Property(const std::string& name) :
 		PropertyInterface(typeid(T).name(), name),
 		value_(T())
-	{}
+	{
+	}
 
 	Property(const std::string& name, T value) :
 		PropertyInterface(typeid(T).name(), name),
 		value_(value)
-	{}
+	{
+	}
 
-	T value() const { return value_; }
-	void assign(T value) { value_ = value; }
+	T value() const
+	{
+		return value_;
+	}
+	void assign(T value)
+	{
+		value_ = value;
+	}
 	PropertyInterface* clone()
 	{
 		Property<T> *property = new Property<T>(name());

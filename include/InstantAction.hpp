@@ -8,7 +8,9 @@ class InstantAction : public Action
 {
 public:
 	InstantAction(const std::string& name);
-	~InstantAction() {};
+	~InstantAction()
+	{
+	};
 
 	void step(float delta);
 };

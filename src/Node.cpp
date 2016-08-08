@@ -36,8 +36,6 @@ void Node::append(Node *child)
 		children_.push_back(child);
 		child->attach(this);
 	}
-
-	// TODO: Should we set a flag that children has changed?
 }
 
 std::vector<Node*>& Node::children()
@@ -73,9 +71,9 @@ std::vector<Node*> Node::getChildrenByGroup(int group)
 
 bool Node::hasChild(Node *child)
 {
-	return (std::find(children_.begin(),
-			  children_.end(),
-			  child) != children_.end());
+	return std::find(children_.begin(),
+			 children_.end(),
+			 child) != children_.end();
 }
 
 bool Node::hasChild(int identifier)
@@ -139,8 +137,7 @@ std::vector<Node*> Node::getSiblingsByGroup(int group)
 
 std::size_t Node::siblingCount() const
 {
-	if (parent() == nullptr)
-	{
+	if (parent() == nullptr) {
 		return 0;
 	}
 
@@ -160,7 +157,7 @@ Node* Node::parent(int identifier) const
 
 	do {
 		parent = parent->parent();
-	} while(parent != nullptr && parent->getId() != identifier);
+	} while (parent != nullptr && parent->getId() != identifier);
 
 	return parent;
 }
@@ -178,7 +175,7 @@ std::vector<Node*> Node::parents()
 	do {
 		parents.push_back(parent);
 		parent = parent->parent();
-	} while(parent != nullptr);
+	} while (parent != nullptr);
 
 	return parents;
 }
@@ -198,6 +195,7 @@ void Node::removeChild(Node* child)
 void Node::removeChild(int identifier)
 {
 	auto child = getChildById(identifier);
+
 	removeChild(child);
 }
 
@@ -251,9 +249,9 @@ void Node::removeAllGroups()
 
 bool Node::hasGroup(int group)
 {
-	return (std::find(groups_.begin(),
-			  groups_.end(),
-			  group) != groups_.end());
+	return std::find(groups_.begin(),
+			 groups_.end(),
+			 group) != groups_.end();
 }
 
 void Node::setProperties(HashMap &properties)
