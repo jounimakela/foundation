@@ -6,9 +6,11 @@
 #include <typeinfo>
 #include <unordered_map>
 
-#include "Property.hpp"
+using KeyValuePairs = std::unordered_map<std::string, linb::any>;
 
-using KeyValuePairs = std::unordered_map<std::string, PropertyInterface *>;
+/**
+ * TODO: Rule of five
+ */
 
 class HashMap
 {
@@ -63,13 +65,11 @@ public:
 			return;
 		}
 
-		Property<T> *property = new Property<T>(key);
-		property->assign(value);
-		pairs_[property->name()] = property;
+    // TODO: Should get moved, right?
+		pairs_[key] = linb::any<T>(value);
 	}
 
 	void add(PropertyInterface *property);
-	void clone(const HashMap &map);
 	bool contains(const std::string& key);
 	std::size_t count();
 
