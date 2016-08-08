@@ -256,6 +256,6 @@ bool Node::hasGroup(int group)
 
 void Node::setProperties(HashMap &properties)
 {
-	properties_.pairs_.clear();
+	//properties_.pairs_.clear();
 	//properties_.clone(properties);
 }

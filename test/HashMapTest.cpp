@@ -26,19 +26,19 @@ SCENARIO("Hash map can get and set values", "[hash_map][manipulation]")
 	}
 }
 
-SCENARIO("Hash map can be copied", "[hash_map][manipulation]")
-{
-	GIVEN("Hash map") {
-		HashMap map;
-		map.add<int>("Test", 1337);
-
-		WHEN("Map is cloned") {
-			HashMap clonemap;
-			clonemap.clone(map);
-
-			THEN("Cloned map has the same keys") {
-				REQUIRE(clonemap.contains("Test"));
-			}
-		}
-	}
-}
+// SCENARIO("Hash map can be copied", "[hash_map][manipulation]")
+// {
+// 	GIVEN("Hash map") {
+// 		HashMap map;
+// 		map.add<int>("Test", 1337);
+//
+// 		WHEN("Map is cloned") {
+// 			HashMap clonemap;
+// 			clonemap.clone(map);
+//
+// 			THEN("Cloned map has the same keys") {
+// 				REQUIRE(clonemap.contains("Test"));
+// 			}
+// 		}
+// 	}
+// }

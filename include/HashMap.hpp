@@ -8,20 +8,11 @@
 
 #include "any.hpp"
 
-/**
- * TODO: Rule of five
- */
 using namespace linb;
 
 class HashMap
 {
 public:
-	HashMap()
-	{
-	};
-
-	virtual ~HashMap();
-
 	template<class T>
 	T get(const std::string& key)
 	{
@@ -62,17 +53,24 @@ public:
 	void add(const std::string& key, T value)
 	{
 		if (contains(key)) {
-			std::cerr	<< "Property(" << key << ") already exists. "
+			std::cerr	<< "Property(" << key << ") already exists."
 					<< std::endl;
 			return;
 		}
 
-		// TODO: Should get moved, right?
 		pairs_[key] = any(value);
 	}
 
-	bool contains(const std::string& key);
-	std::size_t count();
+	bool contains(const std::string& key)
+	{
+		return pairs_.find(key) != pairs_.end();
+	}
 
+	std::size_t count()
+	{
+		return pairs_.size();
+	}
+
+protected:
 	std::unordered_map<std::string, any> pairs_;
 };
