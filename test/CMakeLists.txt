@@ -1,7 +1,6 @@
 # add_executable(TestExecutableName TestFileName.cpp)
 add_executable(NodeTest NodeTest.cpp)
 add_executable(PropertyTest PropertyTest.cpp)
-add_executable(HashMapTest HashMapTest.cpp)
 add_executable(ActionTest ActionTest.cpp)
 
 # target_link_libraries(TestExecutableName LINK_PUBLIC LibraryName)
@@ -9,7 +8,6 @@ add_executable(ActionTest ActionTest.cpp)
 
 target_link_libraries(NodeTest LINK_PUBLIC foundation)
 target_link_libraries(PropertyTest LINK_PUBLIC foundation)
-target_link_libraries(HashMapTest LINK_PUBLIC foundation)
 target_link_libraries(ActionTest LINK_PUBLIC foundation)
 
 # For SFML testing
@@ -23,5 +21,4 @@ target_link_libraries(ActionTest LINK_PUBLIC foundation)
 # add_test(test_name_test TestExecutableName)
 add_test(node_test NodeTest)
 add_test(property_test PropertyTest)
-add_test(hash_map_test HashMapTest)
 add_test(action_test ActionTest)
