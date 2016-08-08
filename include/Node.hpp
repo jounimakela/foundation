@@ -18,8 +18,8 @@ public:
 	};
 
 	Node();
-	Node(Node *parent);
-	Node(int identifier);
+	explicit Node(Node *parent);
+	explicit Node(int identifier);
 	Node(int identifier, Node *parent);
 
 	~Node();

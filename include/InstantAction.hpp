@@ -7,7 +7,7 @@
 class InstantAction : public Action
 {
 public:
-	InstantAction(const std::string& name);
+	explicit InstantAction(const std::string& name);
 	~InstantAction()
 	{
 	};

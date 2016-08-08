@@ -15,7 +15,7 @@ enum ActionStatus {
 class Action : public Node
 {
 public:
-	Action(const std::string& name);
+	explicit Action(const std::string& name);
 	~Action()
 	{
 	};
