@@ -253,9 +253,3 @@ bool Node::hasGroup(int group)
 			 groups_.end(),
 			 group) != groups_.end();
 }
-
-void Node::setProperties(HashMap &properties)
-{
-	//properties_.pairs_.clear();
-	//properties_.clone(properties);
-}

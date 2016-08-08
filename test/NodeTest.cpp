@@ -350,7 +350,6 @@ SCENARIO("Nodes can add a new child", "[node][manipulation]")
 	}
 }
 
-/*
 SCENARIO("Node properties can be changed")
 {
 	GIVEN("A fresh node")
@@ -359,17 +358,17 @@ SCENARIO("Node properties can be changed")
 
 		WHEN("Single property is assigned")
 		{
-			node.properties().add<int>("Key", 100);
+			node.properties["Key"] = 100;
 
 			THEN("It can be fetched")
 			{
-				REQUIRE(node.properties().contains("Key"));
+				REQUIRE(node.properties.count("Key"));
 			}
 
 			THEN("It can be changed")
 			{
-				node.properties().set<int>("Key", 200);
-				int key = node.properties().get<int>("Key");
+				node.properties["Key"] = 200;
+				int key = linb::any_cast<int>(node.properties["Key"]);
 
 				REQUIRE(key == 200);
 			}
@@ -378,17 +377,16 @@ SCENARIO("Node properties can be changed")
 		WHEN("Properties are assigned")
 		{
 			HashMap new_properties;
-			new_properties.add<int>("Integer", 100);
-			new_properties.add<float>("Float", 12);
+			new_properties["Integer"] = 100;
+			new_properties["Float"] = 12.f;
 
-			node.setProperties(new_properties);
+			node.properties = new_properties;
 
 			THEN("They are copied over")
 			{
-				REQUIRE(node.properties().contains("Integer"));
-				REQUIRE(node.properties().contains("Float"));
+				REQUIRE(node.properties.count("Integer"));
+				REQUIRE(node.properties.count("Float"));
 			}
 		}
 	}
 }
-*/

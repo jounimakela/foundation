@@ -1,10 +1,14 @@
 #pragma once
 
-#include <cstddef>
 #include <vector>
-#include <algorithm> // std::find
+#include <cstddef>
+#include <algorithm>
+#include <unordered_map>
 
-#include "HashMap.hpp"
+#include "any.hpp"
+
+using namespace linb;
+using HashMap = std::unordered_map<std::string, any>;
 
 class Node
 {
@@ -71,16 +75,11 @@ public:
 	bool hasGroup(int group);
 
 // Properties
-	HashMap& properties()
-	{
-		return properties_;
-	};
-	void setProperties(HashMap &properties);
+	HashMap properties;
 
 protected:
 	std::vector<Node*> children_;
 	Node *parent_;
-	HashMap properties_;
 
 	int identifier_;
 	std::vector<int> groups_;
