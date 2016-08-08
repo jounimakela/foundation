@@ -6,11 +6,12 @@
 #include <typeinfo>
 #include <unordered_map>
 
-using KeyValuePairs = std::unordered_map<std::string, linb::any>;
+#include "any.hpp"
 
 /**
  * TODO: Rule of five
  */
+using namespace linb;
 
 class HashMap
 {
@@ -18,6 +19,7 @@ public:
 	HashMap()
 	{
 	};
+
 	virtual ~HashMap();
 
 	template<class T>
@@ -29,13 +31,13 @@ public:
 			return T();
 		}
 
-		if (pairs_.at(key)->type() != typeid(T).name()) {
+		if (pairs_.at(key).type().name() != typeid(T).name()) {
 			std::cerr	<< "Property(" << key << ") type mismatch. "
 					<< "Returning blank type." << std::endl;
 			return T();
 		}
 
-		return static_cast<Property<T>*>(pairs_[key])->value();
+		return any_cast<T>(pairs_[key]);
 	}
 
 	template<class T>
@@ -47,13 +49,13 @@ public:
 			return;
 		}
 
-		if (pairs_.at(key)->type() != typeid(T).name()) {
+		if (pairs_.at(key).type().name() != typeid(T).name()) {
 			std::cerr	<< "Property(" << key << ") type mismatch. "
 					<< "Value not set." << std::endl;
 			return;
 		}
 
-		static_cast<Property<T>*>(pairs_[key])->assign(value);
+		pairs_[key] = any(value);
 	}
 
 	template<class T>
@@ -65,13 +67,12 @@ public:
 			return;
 		}
 
-    // TODO: Should get moved, right?
-		pairs_[key] = linb::any<T>(value);
+		// TODO: Should get moved, right?
+		pairs_[key] = any(value);
 	}
 
-	void add(PropertyInterface *property);
 	bool contains(const std::string& key);
 	std::size_t count();
 
-	KeyValuePairs pairs_;
+	std::unordered_map<std::string, any> pairs_;
 };

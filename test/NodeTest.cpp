@@ -350,6 +350,7 @@ SCENARIO("Nodes can add a new child", "[node][manipulation]")
 	}
 }
 
+/*
 SCENARIO("Node properties can be changed")
 {
 	GIVEN("A fresh node")
@@ -390,3 +391,4 @@ SCENARIO("Node properties can be changed")
 		}
 	}
 }
+*/

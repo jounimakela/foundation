@@ -26,7 +26,7 @@ SCENARIO("Hash map can get and set values", "[hash_map][manipulation]")
 	}
 }
 
-SCENARIO("Hash map can be cloned", "[hash_map][manipulation]")
+SCENARIO("Hash map can be copied", "[hash_map][manipulation]")
 {
 	GIVEN("Hash map") {
 		HashMap map;
