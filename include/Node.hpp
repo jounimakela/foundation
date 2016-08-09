@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include <vector>
 #include <cstddef>
 #include <algorithm>
@@ -21,6 +22,10 @@ public:
 	explicit Node(Node *parent);
 	explicit Node(int identifier);
 	Node(int identifier, Node *parent);
+
+        // TODO: Copy constructor - set parent to nullptr
+        // TODO: Move constructor - set parent
+        // TODO: Move assignment constructor - set parent ?
 
 	~Node();
 
@@ -62,12 +67,13 @@ public:
 	int getId() const
 	{
 		return identifier_;
-	};
+	}
 
 	std::vector<int> groups() const
 	{
 		return groups_;
-	};
+	}
+
 	void addGroup(int group);
 	void addGroup(std::vector<int> groups);
 	void removeFromGroup(int group);
@@ -75,9 +81,10 @@ public:
 	bool hasGroup(int group);
 
 // Properties
-	HashMap properties;
+        HashMap properties;
 
 protected:
+        // TODO: Reorder (check ctor)
 	std::vector<Node*> children_;
 	Node *parent_;
 

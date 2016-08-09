@@ -1,33 +1,37 @@
 #include "Node.hpp"
 
 Node::Node() :
+        parent_(nullptr),
 	identifier_(DEFAULT_IDENTIFIER)
 {
-	parent_ = nullptr;
 }
 
 Node::Node(int identifier) :
+        parent_(nullptr),
 	identifier_(identifier)
 {
-	parent_ = nullptr;
 }
 
 Node::Node(Node *parent) :
+        parent_(nullptr),
 	identifier_(DEFAULT_IDENTIFIER)
 {
-	parent_ = nullptr;
 	attach(parent);
 }
 
 Node::Node(int identifier, Node *parent) :
+        parent_(nullptr),
 	identifier_(identifier)
 {
-	parent_ = nullptr;
 	attach(parent);
 }
 
 Node::~Node()
 {
+        // TODO: This requires testing
+        if (parent_ != nullptr) {
+                parent_->removeChild(this);
+        }
 }
 
 void Node::append(Node *child)
@@ -42,7 +46,6 @@ std::vector<Node*>& Node::children()
 {
 	return children_;
 }
-
 
 Node* Node::getChildById(int identifier) const
 {
