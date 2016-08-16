@@ -11,7 +11,8 @@ public:
 
 	bool checkStrict()
 	{
-		return expect("Key").equal(100);
+		return expect<int>("Key").equal(100);
+		return expect<int>("Key").notTo().equal(30);
 	}
 
 	bool checkScore() { return false; }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <regex>
 
 #include "Node.hpp"
 #include "any.hpp"
@@ -8,19 +9,18 @@
 class Condition
 {
 public:
-	Condition(Node *node) : node_(node) {};
+	Condition(Node *node) : node_(node) = default;
 
 	virtual bool checkStrict() = 0;
 	virtual bool checkScore() = 0;
 
 protected:
+	template<typename T>
 	class Matcher
 	{
 	public:
-		Matcher(int value) :
-			inverse(false),
-			value_(value) {}
-
+		Matcher(T value) : inverse_(false), value_(value) = default;
+		// TODO: Is this necessary?
 		Matcher(Matcher&&) = default;
 
 		Matcher& notTo()
@@ -30,36 +30,7 @@ protected:
 		}
 
 	// Value matchers
-	/*
-		bool toEqual(int expected);
-		bool toEqual(bool expected);
-		bool toEqual(float expected);
-		bool toEqual(std::string expected);
-
-		bool toBeGreater(int expected);
-		bool toBeGreater(float expected);
-
-		bool toBeGreaterOrEqual(int expected);
-		bool toBeGreaterOrEqual(float expected);
-
-		bool toBeLess(int expected);
-		bool toBeLess(float expected);
-
-		bool toBeLessOrEqual(int expected);
-		bool toBeLessOrEqual(float expected);
-
-		bool toBeBetween(int minimum, int maximum);
-		bool toBeBetween(float minimum, float maximum);
-
-		bool toMatch(std::string expression);
-
-		bool toBeWithin(int delta, int expected);
-		bool toBeWithin(float delta, float expected);
-
-		bool toStartWith(std::string expected);
-		bool toEndWith(std::string expected);
-	*/
-		bool equal(int expected)
+		bool equal(T expected)
 		{
 			bool result = value_ == expected;
 			if (inverse)
@@ -70,18 +41,98 @@ protected:
 			return result;
 		}
 
+		bool beGreater(T expected);
+		{
+			bool result = value_ > expected;
+			if (inverse)
+			{
+				return !result;
+			}
+
+			return result;
+		}
+
+		bool beGreaterOrEqual(T expected);
+		{
+			bool result = value_ >= expected;
+			if (inverse)
+			{
+				return !result;
+			}
+
+			return result;
+		}
+
+		bool beLess(T expected);
+		{
+			bool result = value_ < expected;
+			if (inverse)
+			{
+				return !result;
+			}
+
+			return result;
+		}
+
+		bool beLessOrEqual(T expected);
+		{
+			bool result = value_ <= expected;
+			if (inverse)
+			{
+				return !result;
+			}
+
+			return result;
+		}
+
+		bool beBetween(T minimum, T maximum);
+		{
+			// TODO: Check values are int or float type?
+			bool result = (value_ >= minimum) && (value_ <= maximum)
+			if (inverse)
+			{
+				return !result;
+			}
+
+			return result;
+		}
+
+		bool match(std::string expression);
+		{
+			// TODO: Check value is standard string?
+			return false;
+		}
+
+		bool beWithin(float delta, T expected);
+		{
+			// TODO: Check values are int or float type?
+			return false;
+		}
+
+		bool startWith(std::string expected);
+		{
+			// TODO: Check value is standard string?
+			return false;
+		}
+
+		bool endWith(std::string expected);
+		{
+			// TODO: Check value is standard string?
+			return false;
+		}
+
 	protected:
-		bool inverse;
-		int value_;
+		bool inverse_;
+		T value_;
 	};
 
-	Matcher expect(const std::string& key)
+	template<typename T>
+	Matcher<T> expect(const std::string& key)
 	{
-		int value = linb::any_cast<int>(node_->properties[key]);
-		Matcher matcher(value);
+		T value = linb::any_cast<T>(node_->properties[key]);
+		Matcher<T> matcher(value);
 		return matcher;
 	}
-
 
 	Node *node_;
 };
