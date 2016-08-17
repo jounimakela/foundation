@@ -1,7 +1,8 @@
 #pragma once
 
-#include <string>
 #include <regex>
+#include <string>
+#include <cstddef>
 
 #include "Node.hpp"
 #include "any.hpp"
@@ -12,7 +13,7 @@ public:
 	Condition(Node *node) : node_(node) = default;
 
 	virtual bool checkStrict() = 0;
-	virtual bool checkScore() = 0;
+	virtual bool checkScore()  = 0;
 
 protected:
 	template<typename T>
@@ -21,7 +22,7 @@ protected:
 	public:
 		Matcher(T value) : inverse_(false), value_(value) = default;
 		// TODO: Is this necessary?
-		Matcher(Matcher&&) = default;
+		// Matcher(Matcher&&) = default;
 
 		Matcher& notTo()
 		{
@@ -87,8 +88,8 @@ protected:
 
 		bool beBetween(T minimum, T maximum);
 		{
-			// TODO: Check values are int or float type?
-			bool result = (value_ >= minimum) && (value_ <= maximum)
+			// TODO: Assert values are int or float type?
+			bool result = value_ >= minimum && value_ <= maximum;
 			if (inverse)
 			{
 				return !result;
@@ -99,25 +100,62 @@ protected:
 
 		bool match(std::string expression);
 		{
-			// TODO: Check value is standard string?
+			// TODO: Assert value is standard string?
+			auto regex = std::regex(expression);
+
+			if (std::regex_match(value_, regex)) {
+				if (inverse) {
+					return false;
+				}
+
+				return true;
+			}
+
 			return false;
 		}
 
 		bool beWithin(float delta, T expected);
 		{
-			// TODO: Check values are int or float type?
+			// TODO: Assert values are int or float type?
+			float low  = reinterpret_cast<float>(expected) - delta;
+			float high = reinterpret_cast<float>(expected) + delta;
+
+			return beBetween(low, high);
+		}
+
+		bool startsWith(std::string expected);
+		{
+			// TODO: Assert value is standard string?
+			std::size_t found = value_.find(expected);
+
+			if (found != std::string::npos) {
+				if (found == 0) {
+					if (inverse) {
+						return false;
+					}
+
+					return true;
+				}
+			}
+
 			return false;
 		}
 
-		bool startWith(std::string expected);
+		bool endsWith(std::string expected);
 		{
-			// TODO: Check value is standard string?
-			return false;
-		}
+			// TODO: Assert value is standard string?
+			std::size_t found = value_.find(expected);
 
-		bool endWith(std::string expected);
-		{
-			// TODO: Check value is standard string?
+			if (found != std::string::npos) {
+				if (found == value_.length()) {
+					if (inverse) {
+						return false;
+					}
+
+					return true;
+				}
+			}
+
 			return false;
 		}
 
