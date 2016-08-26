@@ -7,13 +7,20 @@
 #include "Node.hpp"
 #include "any.hpp"
 
+/**
+ * TODO: Cleanup the code, requires more "safe" coding
+ * This thing should apply rules on creation, since they cannot be changed in
+ * runtime. On check() and ratio() they should be applied.
+ */
+
 class Condition
 {
 public:
 	Condition(Node *node) : node_(node) = default;
 
-	virtual bool checkStrict() = 0;
-	virtual bool checkScore()  = 0;
+	bool check();
+	int ratio();
+	int score();
 
 protected:
 	template<typename T>
@@ -24,8 +31,14 @@ protected:
 		// TODO: Is this necessary?
 		// Matcher(Matcher&&) = default;
 
+		Matcher& to()
+		{
+			// FIXME: RULES STRICTINESS
+		}
+
 		Matcher& notTo()
 		{
+			// FIXME: RULES STRICTINESS
 			inverse = true;
 			return *this;
 		}
@@ -116,7 +129,6 @@ protected:
 
 		bool beWithin(float delta, T expected);
 		{
-			// TODO: Assert values are int or float type?
 			float low  = reinterpret_cast<float>(expected) - delta;
 			float high = reinterpret_cast<float>(expected) + delta;
 
@@ -146,6 +158,7 @@ protected:
 			// TODO: Assert value is standard string?
 			std::size_t found = value_.find(expected);
 
+			// TODO: Ugly, there are more similar cases
 			if (found != std::string::npos) {
 				if (found == value_.length()) {
 					if (inverse) {
@@ -161,6 +174,7 @@ protected:
 
 	protected:
 		bool inverse_;
+		bool strict_;
 		T value_;
 	};
 
@@ -169,8 +183,15 @@ protected:
 	{
 		T value = linb::any_cast<T>(node_->properties[key]);
 		Matcher<T> matcher(value);
+		// Matcher* matcher = new Matcher<T>(value);
+		//rules.push_back(matcher);
 		return matcher;
 	}
 
+	virtual void rules() = 0;
+
 	Node *node_;
+	// TODO: These should be maps
+	std::vector<Matcher*> loose_rules;
+	std::vector<Matcher*> strict_rules;
 };
